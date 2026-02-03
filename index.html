@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Quiz 💘</title>
+<style>
+  body { margin:0; font-family: 'Segoe UI', sans-serif; background: #b30059; display:flex; justify-content:center; align-items:center; min-height:100vh; overflow: hidden; }
+  .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); padding: 30px; border-radius:20px; width:90%; max-width:500px; text-align:center; color:#fff; position: relative; z-index: 2; }
+  button { padding:12px 16px; border:none; border-radius:12px; margin:5px; cursor:pointer; }
+  .option { background: rgba(255,255,255,0.9); color:#b30059; font-weight:600; }
+  .reward { margin-top:8px; font-size:0.95rem; color:#ffe6ea; font-weight:600; }
+  .heart { position: absolute; color: rgba(255,255,255,0.6); font-size:20px; animation: float 8s linear infinite; }
+  @keyframes float { from { transform: translateY(100vh) scale(0.8); opacity: 0; } to { transform: translateY(-10vh) scale(1.2); opacity: 1; } }
+</style>
+</head>
+<body>
+<script>
+const emojis=['💗','💖','😘','❤️','💋'];
+for(let i=0;i<30;i++){ const h=document.createElement('div'); h.className='heart'; h.textContent=emojis[Math.floor(Math.random()*emojis.length)]; h.style.left=Math.random()*100+'vw'; h.style.animationDelay=Math.random()*8+'s'; h.style.fontSize=14+Math.random()*24+'px'; document.body.appendChild(h); }
+</script>
+<div class="card">
+  <h1>Valentine Quiz 💕</h1>
+  <div id="question">Ready for a tiny test? 😌💘</div>
+  <div id="options">
+    <button class="option" onclick="startQuiz()">Start 💗</button>
+  </div>
+</div>
+<script>
+let index=0;
+const questions=[
+  {q:"1) What did you give me when we first met?", options:["BIOLOGY problem","NLM problem","MATHS problem"], correct:1},
+  {q:"2) What is Newton's first law about?", options:["Inertia","Gravity","Force"], correct:0},
+  {q:"3) Tell me my favourite dish", options:["Biriyani","Daal makhni","Tumhare haat ka pehla paneer"], correct:2},
+  {q:"4) What is my WhatsApp locked chat password", options:["#777#","sussybakka","sussibakka"], correct:0},
+  {q:"5) Mere saath kalesh karti ho", options:["True","False"], special:true},
+  {q:"6) You kissed my", options:["Right cheek","Left cheek"], correct:1},
+  {q:"7) My favourite game", options:["GTA Vice City","GTA SA","Resident Evil 4"], correct:1},
+  {q:"8) Who is champion in my eyes", options:["Raghav Singh","Yasashri Banerjee 💖","Sumit"], correct:1},
+  {q:"9) Describe me in one sentence", input:true},
+  {q:"10) Favourite music we enjoy together?", options:["Shayranna","Pop Hits","Classical"], correct:0},
+  {q:"11) Favourite movie", options:["3 Idiots","Dhurandhar","Tumhare saath joh movie dekhu woh movie accha"], correct:2},
+  {q:"12) Hard Physics: A particle moves under a constant acceleration of 2 m/s². What distance does it cover in 5 s?", options:["25 m","50 m","10 m"], correct:0},
+  {q:"13) Chemistry: Which product forms when CH3CH2Br reacts with aqueous KOH?", options:["CH3CH2OH","CH3CH3","CH2CH2"], correct:0},
+  {q:"14) Chemistry: Which ligand forms [Fe(CN)6]³⁻?", options:["Cyanide","Ammonia","Water"], correct:0},
+  {q:"15) Physics: Potential energy at height 10 m for mass 2 kg (g=10 m/s²)?", options:["200 J","20 J","100 J"], correct:0},
+  {q:"16) Chemistry: Strongest acid among HCl, HF, HBr?", options:["HCl","HBr","HF"], correct:1},
+  {q:"17) Physics: Electric field due to a point charge 2μC at 1 m distance (k=9×10^9)?", options:["18×10^3 N/C","9×10^3 N/C","36×10^3 N/C"], correct:0},
+  {q:"18) Chemistry: Hybridization of C in CO2?", options:["sp","sp2","sp3"], correct:0},
+  {q:"19) Chemistry: Major product of CH3CH2OH + H2SO4?", options:["CH2=CH2","CH3CH2OSO3H","CH3CH2OH"], correct:0},
+  {q:"20) Physics: Kinetic energy of 3 kg mass moving at 4 m/s?", options:["24 J","12 J","20 J"], correct:0},
+  {q:"21) Physics: If a spring of k=100 N/m is stretched 0.1 m, energy stored?", options:["0.5 J","1 J","5 J"], correct:0}
+];
+const questionEl=document.getElementById('question');
+const optionsEl=document.getElementById('options');
+function startQuiz(){index=0; loadQuestion();}
+function loadQuestion(){
+  const c=questions[index]; questionEl.textContent=c.q; optionsEl.innerHTML='';
+  if(c.input){ const input=document.createElement('input'); input.type='text'; input.placeholder='Type here...'; optionsEl.appendChild(input);
+  const btn=document.createElement('button'); btn.textContent='Next 💗'; btn.className='option'; btn.onclick=function(){index++; index<questions.length?loadQuestion():showFinal();}; optionsEl.appendChild(btn); return;}
+  c.options.forEach((opt,i)=>{ const btn=document.createElement('button'); btn.textContent=opt; btn.className='option'; btn.onclick=function(){handleAnswer(i);}; optionsEl.appendChild(btn); });
+}
+function handleAnswer(i){
+  const c=questions[index]; optionsEl.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const feedback=document.createElement('div'); feedback.style.marginTop='12px'; feedback.style.fontWeight='600';
+  const reward=document.createElement('div'); reward.className='reward';
+  const praise=['Uff my senorita remembers 😍','I lobbb you baby 💖','Chummi lelo 😘','You nailed it! ❤️','Super smart girl 💕'];
+  const tease=['Itna bhi nahi pata? 😏 Try again.','Hmmmm galat 😌 dobara socho.','Pagliiii 😜 ye bhi bhool gayi?','Nopeee ❌ mujhe better yaad hai tumse.'];
+  const rewardsArr=['💖 +10 XP','🍫 +5 Chocolates','💋 +20 XP','🍫💖 +15 XP','🍫💋 +25 XP'];
+  if(c.special){
+    if(i===0){ feedback.textContent='✅ Correct! Kalesh karti ho 😍'; feedback.style.color='#eafff1'; optionsEl.appendChild(feedback);
+    reward.textContent='🎁 '+rewardsArr[Math.floor(Math.random()*rewardsArr.length)]; optionsEl.appendChild(reward);
+    const nextBtn=document.createElement('button'); nextBtn.textContent='Next 💗'; nextBtn.className='option'; nextBtn.onclick=function(){index++; index<questions.length?loadQuestion():showFinal();}; optionsEl.appendChild(nextBtn);
+    } else { feedback.textContent='❌ Jhut bolti ho pagli 😌'; feedback.style.color='#ffe6ea'; optionsEl.appendChild(feedback);
+      const retryBtn=document.createElement('button'); retryBtn.textContent='Retry 🔄'; retryBtn.className='option'; retryBtn.onclick=function(){loadQuestion();}; optionsEl.appendChild(retryBtn); }
+    return; }
+  if(c.correct!==undefined && i===c.correct){ feedback.textContent='✅ '+praise[Math.floor(Math.random()*praise.length)]; feedback.style.color='#eafff1'; optionsEl.appendChild(feedback);
+    reward.textContent='🎁 '+rewardsArr[Math.floor(Math.random()*rewardsArr.length)]; optionsEl.appendChild(reward);
+    const nextBtn=document.createElement('button'); nextBtn.textContent='Next 💗'; nextBtn.className='option'; nextBtn.onclick=function(){index++; index<questions.length?loadQuestion():showFinal();}; optionsEl.appendChild(nextBtn);
+  } else if(c.correct!==undefined){ feedback.textContent='❌ '+tease[Math.floor(Math.random()*tease.length)]; feedback.style.color='#ffe6ea'; optionsEl.appendChild(feedback);
+    const retryBtn=document.createElement('button'); retryBtn.textContent='Retry 🔄'; retryBtn.className='option'; retryBtn.onclick=function(){loadQuestion();}; optionsEl.appendChild(retryBtn); }
+}
+function showFinal(){document.querySelector('.card').innerHTML='<div class="final">Will you be my Valentine? 💘</div><button class="option" onclick="celebrate()">YES 💖</button><div class="footer">(Only one correct answer 😌)</div>'}
+function celebrate(){document.querySelector('.card').innerHTML='<h1>YAYYY 💞</h1><div class="question">You just made us the happiest ✨</div><div class="footer">Happy Valentine\'s Day you are mineee 💌</div>'}
+</script>
+</body>
+</html>
